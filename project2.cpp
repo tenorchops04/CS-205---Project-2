@@ -4,6 +4,8 @@
 #include <time.h>
 #include <sstream>
 #include <fstream>
+#include <limits>
+#include <cmath>
 
 using namespace std;
 
@@ -39,7 +41,45 @@ vector<vector<double> > parseData(const string &fileName)
 }
 
 double leaveOneOutCrossValidation(Data data, set<int> current_set, int feature_to_add){
-    double accuracy = rand()% 100;
+    int num_correctly_classified = 0;
+
+    for(int i = 0; i < data.size(); i++){
+        vector<double> object_to_classify;
+        int label_object_to_classify = data[i][0];
+
+        for(int j = 1; j < data[i].size(); j++){
+            object_to_classify.push_back(data[i][j]);
+        }
+
+        double nearest_neighbor_distance = numeric_limits<double>::max();
+        double nearest_neighbor_location = numeric_limits<double>::max();
+        int nearest_neighbor_label = 0;
+
+        for(int j = 0; j < data.size(); j++){
+            if(j!=i){
+                double sum = 0;
+                for(int k = 1; k < data[j].size(); k++){
+                    sum+=(object_to_classify[k] - data[j][k]);
+                }
+
+                double distance = sqrt(pow(sum, 2));
+
+                if(distance < nearest_neighbor_distance){
+                    nearest_neighbor_distance = distance;
+                    nearest_neighbor_location = j;
+                    nearest_neighbor_label = data[nearest_neighbor_location][0];
+                }
+            }
+        }
+
+        if(label_object_to_classify == nearest_neighbor_label)
+            num_correctly_classified++;
+        cout << "Object " << i << " is class " << label_object_to_classify << endl;
+        cout << "--Its nearest neighbor is " << nearest_neighbor_location << " which is in class " << nearest_neighbor_label << endl;
+    }
+    cout << data.size() << endl;
+    double accuracy = double(num_correctly_classified)/double(data.size());
+    cout << "The accuracy is " << accuracy*100 << "%\n";
 
     return accuracy;
 }
@@ -87,5 +127,6 @@ int main(){
     int feature_to_add;
     Data data = parseData(filename);
 
-    featureSearch(data);
+    //featureSearch(data);
+    leaveOneOutCrossValidation(data, current_set, feature_to_add);
 }
