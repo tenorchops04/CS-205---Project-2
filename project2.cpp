@@ -53,7 +53,7 @@ vector<vector<double> > parseData(const string &fileName)
     return data;
 }
 
-double leaveOneOutCrossValidation(const Data& data, set<int> current_set, int feature_to_add){
+double leaveOneOutCrossValidation(const Data& data, set<int> current_set){
     int num_correctly_classified = 0;
 
     for(int i = 0; i < data.size(); i++){
@@ -70,7 +70,6 @@ double leaveOneOutCrossValidation(const Data& data, set<int> current_set, int fe
                 for(set<int>::iterator it = current_set.begin(); it != current_set.end(); it++){
                     sum += pow((data[i][*it] - data[j][*it]),2);
                 }
-                sum += pow((data[i][feature_to_add] - data[j][feature_to_add]), 2);
 
                 double distance = sqrt(sum);
 
@@ -100,10 +99,13 @@ void featureSearch(const Data& data){
     for(int i = 1; i <= data[0].size()-1; i++){
         int feature_to_add_at_this_level = 0;
         double best_so_far_accuracy = 0;
+
         // Iterate through each feature
         for(int j = 1; j <= data[0].size()-1; j++){
             if(current_set_of_features.find(j) == current_set_of_features.end()){
-                double accuracy = leaveOneOutCrossValidation(data, current_set_of_features, j);
+                set<int> new_set_of_features = current_set_of_features;
+                new_set_of_features.insert(j);
+                double accuracy = leaveOneOutCrossValidation(data, new_set_of_features);
 
                 cout << "\tUsing feature(s) ";
                 if(current_set_of_features.empty())
@@ -120,8 +122,6 @@ void featureSearch(const Data& data){
                 }
             }
         }
-
-        cout << "Best accuracy so far: " << best_so_far_accuracy << endl;
 
         if(best_so_far_accuracy > prev_best_accuracy){
             accuracy_has_decreased = false;
@@ -149,8 +149,71 @@ void featureSearch(const Data& data){
     }
 }
 
-void backwardElimination(){
-    cout << "Backward Elimination\n";
+void backwardElimination(const Data& data){
+    set<int> current_set_of_features;
+    set<int> prev_best_features;
+    double prev_best_accuracy = 0;
+    bool accuracy_has_decreased = false;
+
+    for(int i = 1; i < data[0].size(); i++){
+        current_set_of_features.insert(i);
+    }
+
+    cout << "Beginning search.\n\n";
+    double best_so_far_accuracy = leaveOneOutCrossValidation(data, current_set_of_features);
+
+    cout << "Using feature(s) ";
+    printFeatures(current_set_of_features);
+    cout << "}, accuracy is " << best_so_far_accuracy << "%\n";
+
+    for(int i = 1; i < data[0].size(); i++){
+        int feature_to_eliminate_at_this_level;
+
+        for(set<int>::iterator it = current_set_of_features.begin(); it != current_set_of_features.end(); it++){
+
+            set<int> new_feature_set = current_set_of_features;
+            new_feature_set.erase(*it);
+
+
+            double accuracy = leaveOneOutCrossValidation(data, new_feature_set);
+
+            cout << "\tUsing feature(s) ";
+            printFeatures(new_feature_set);
+            cout << "}, accuracy is " << accuracy << "%\n";
+
+            if(accuracy > best_so_far_accuracy){
+                best_so_far_accuracy = accuracy;
+                feature_to_eliminate_at_this_level = *it;
+            }
+        }
+
+        if(best_so_far_accuracy > prev_best_accuracy){
+            accuracy_has_decreased = false;
+        }
+        else if(best_so_far_accuracy < prev_best_accuracy){
+            if(accuracy_has_decreased){
+                cout << "Finished search!! The best feature subset is ";
+                printFeatures(prev_best_features);
+                cout << "} which has an accuracy of " << prev_best_accuracy << "%\n\n";
+
+                break;
+            }
+            accuracy_has_decreased = true;
+            cout << "(Warning, Accuracy has decreased! Continuing search in case of local maxima)\n";
+        }
+
+        current_set_of_features.erase(feature_to_eliminate_at_this_level);
+        cout << "Feature set ";
+        printFeatures(current_set_of_features);
+        cout << "} was best, accuracy is " << best_so_far_accuracy << "%\n";
+
+        if(best_so_far_accuracy > prev_best_accuracy){
+            prev_best_accuracy = best_so_far_accuracy;
+            prev_best_features = current_set_of_features;
+        }
+        best_so_far_accuracy = 0;
+
+    }
 }
 
 int main(){
@@ -169,15 +232,10 @@ int main(){
     int num_features = 0;
 
     for(int i = 1; i < data[0].size(); i++){
-        num_features++;
-
-        if(i != data[0].size()-1)
-            all_features.insert(i);
-        else
-            feature_to_add = i;
+        all_features.insert(i);
     }
 
-    cout << "\nRunning nearest neighbor with all " << num_features << " features, using \"leave-one-out\" evaluation, I get an accuracy of " << leaveOneOutCrossValidation(data, all_features, feature_to_add) << "%\n\n"; 
+    cout << "\nRunning nearest neighbor with all " << num_features << " features, using \"leave-one-out\" evaluation, I get an accuracy of " << leaveOneOutCrossValidation(data, all_features) << "%\n\n"; 
 
     switch(choice){
         case 1:
@@ -185,7 +243,7 @@ int main(){
             featureSearch(data);
             break;
         case 2:
-            backwardElimination();
+            backwardElimination(data);
             break;
         default:
             break;
