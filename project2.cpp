@@ -92,13 +92,15 @@ double leaveOneOutCrossValidation(const Data& data, set<int> current_set, int fe
 
 void featureSearch(const Data& data){
     set<int> current_set_of_features;
+    set<int> prev_best_features;
+    double prev_best_accuracy = 0;
+    bool accuracy_has_decreased = false;
 
+    // Iterate through each level of the graph
     for(int i = 1; i <= data[0].size()-1; i++){
-        //cout << "On the " << i << "th level of the search tree\n";
-
         int feature_to_add_at_this_level = 0;
         double best_so_far_accuracy = 0;
-
+        // Iterate through each feature
         for(int j = 1; j <= data[0].size()-1; j++){
             if(current_set_of_features.find(j) == current_set_of_features.end()){
                 double accuracy = leaveOneOutCrossValidation(data, current_set_of_features, j);
@@ -118,15 +120,33 @@ void featureSearch(const Data& data){
                 }
             }
         }
+
+        cout << "Best accuracy so far: " << best_so_far_accuracy << endl;
+
+        if(best_so_far_accuracy > prev_best_accuracy){
+            accuracy_has_decreased = false;
+        }
+        else if(best_so_far_accuracy < prev_best_accuracy){
+            if(accuracy_has_decreased){
+                cout << "Finished search!! The best feature subset is ";
+                printFeatures(prev_best_features);
+                cout << "} which has an accuracy of " << prev_best_accuracy << "%\n\n";
+
+                break;
+            }
+            accuracy_has_decreased = true;
+            cout << "(Warning, Accuracy has decreased! Continuing search in case of local maxima)\n";
+        }
         current_set_of_features.insert(feature_to_add_at_this_level);
         cout << "Feature set ";
         printFeatures(current_set_of_features);
         cout << "} was best, accuracy is " << best_so_far_accuracy << "%\n";
-    }
-}
 
-void forwardSelection(){
-    cout << "Forward selection\n";
+        if(best_so_far_accuracy > prev_best_accuracy){
+            prev_best_accuracy = best_so_far_accuracy;
+            prev_best_features = current_set_of_features;
+        }
+    }
 }
 
 void backwardElimination(){
@@ -134,8 +154,6 @@ void backwardElimination(){
 }
 
 int main(){
-    //cout.precision(4);
-
     cout << "Welcome to Celvin Lizama Pena's Feature Selection Algorithm.\nType in the name of the file to test:\n";
     string filename;
     cin >> filename;
@@ -159,8 +177,6 @@ int main(){
             feature_to_add = i;
     }
 
-    printFeatures(all_features);
-    cout << ", " << feature_to_add << "}\n";
     cout << "\nRunning nearest neighbor with all " << num_features << " features, using \"leave-one-out\" evaluation, I get an accuracy of " << leaveOneOutCrossValidation(data, all_features, feature_to_add) << "%\n\n"; 
 
     switch(choice){
