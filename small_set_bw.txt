@@ -1,0 +1,77 @@
+
+This dataset has 10 features (not including the class attribute), with 300 instances.
+
+Running nearest neighbor with all 10 features, using "leave-one-out" evaluation, I get an accuracy of 81.3333%
+
+Beginning search.
+
+Using feature(s) {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, accuracy is 81.3333%
+	Using feature(s) {2, 3, 4, 5, 6, 7, 8, 9, 10}, accuracy is 78.6667%
+	Using feature(s) {1, 3, 4, 5, 6, 7, 8, 9, 10}, accuracy is 82%
+	Using feature(s) {1, 2, 4, 5, 6, 7, 8, 9, 10}, accuracy is 79%
+	Using feature(s) {1, 2, 3, 5, 6, 7, 8, 9, 10}, accuracy is 87.3333%
+	Using feature(s) {1, 2, 3, 4, 6, 7, 8, 9, 10}, accuracy is 84%
+	Using feature(s) {1, 2, 3, 4, 5, 7, 8, 9, 10}, accuracy is 81.6667%
+	Using feature(s) {1, 2, 3, 4, 5, 6, 8, 9, 10}, accuracy is 76.6667%
+	Using feature(s) {1, 2, 3, 4, 5, 6, 7, 9, 10}, accuracy is 77.6667%
+	Using feature(s) {1, 2, 3, 4, 5, 6, 7, 8, 10}, accuracy is 81.6667%
+	Using feature(s) {1, 2, 3, 4, 5, 6, 7, 8, 9}, accuracy is 81.3333%
+Feature set {1, 2, 3, 5, 6, 7, 8, 9, 10} was best, accuracy is 87.3333%
+	Using feature(s) {2, 3, 5, 6, 7, 8, 9, 10}, accuracy is 84.3333%
+	Using feature(s) {1, 3, 5, 6, 7, 8, 9, 10}, accuracy is 86.3333%
+	Using feature(s) {1, 2, 5, 6, 7, 8, 9, 10}, accuracy is 85%
+	Using feature(s) {1, 2, 3, 6, 7, 8, 9, 10}, accuracy is 85.6667%
+	Using feature(s) {1, 2, 3, 5, 7, 8, 9, 10}, accuracy is 83.6667%
+	Using feature(s) {1, 2, 3, 5, 6, 8, 9, 10}, accuracy is 79.6667%
+	Using feature(s) {1, 2, 3, 5, 6, 7, 9, 10}, accuracy is 85.3333%
+	Using feature(s) {1, 2, 3, 5, 6, 7, 8, 10}, accuracy is 87.6667%
+	Using feature(s) {1, 2, 3, 5, 6, 7, 8, 9}, accuracy is 83.6667%
+Feature set {1, 2, 3, 5, 6, 7, 8, 10} was best, accuracy is 87.6667%
+	Using feature(s) {2, 3, 5, 6, 7, 8, 10}, accuracy is 84%
+	Using feature(s) {1, 3, 5, 6, 7, 8, 10}, accuracy is 88%
+	Using feature(s) {1, 2, 5, 6, 7, 8, 10}, accuracy is 86%
+	Using feature(s) {1, 2, 3, 6, 7, 8, 10}, accuracy is 88%
+	Using feature(s) {1, 2, 3, 5, 7, 8, 10}, accuracy is 88%
+	Using feature(s) {1, 2, 3, 5, 6, 8, 10}, accuracy is 81.6667%
+	Using feature(s) {1, 2, 3, 5, 6, 7, 10}, accuracy is 84.3333%
+	Using feature(s) {1, 2, 3, 5, 6, 7, 8}, accuracy is 83%
+Feature set {1, 3, 5, 6, 7, 8, 10} was best, accuracy is 88%
+	Using feature(s) {3, 5, 6, 7, 8, 10}, accuracy is 84.3333%
+	Using feature(s) {1, 5, 6, 7, 8, 10}, accuracy is 85.6667%
+	Using feature(s) {1, 3, 6, 7, 8, 10}, accuracy is 89%
+	Using feature(s) {1, 3, 5, 7, 8, 10}, accuracy is 85.3333%
+	Using feature(s) {1, 3, 5, 6, 8, 10}, accuracy is 80.3333%
+	Using feature(s) {1, 3, 5, 6, 7, 10}, accuracy is 86.6667%
+	Using feature(s) {1, 3, 5, 6, 7, 8}, accuracy is 82.6667%
+Feature set {1, 3, 6, 7, 8, 10} was best, accuracy is 89%
+	Using feature(s) {3, 6, 7, 8, 10}, accuracy is 85.3333%
+	Using feature(s) {1, 6, 7, 8, 10}, accuracy is 86.3333%
+	Using feature(s) {1, 3, 7, 8, 10}, accuracy is 88.3333%
+	Using feature(s) {1, 3, 6, 8, 10}, accuracy is 80%
+	Using feature(s) {1, 3, 6, 7, 10}, accuracy is 89%
+	Using feature(s) {1, 3, 6, 7, 8}, accuracy is 83%
+Feature set {1, 3, 6, 7, 10} was best, accuracy is 89%
+	Using feature(s) {3, 6, 7, 10}, accuracy is 87.6667%
+	Using feature(s) {1, 6, 7, 10}, accuracy is 91%
+	Using feature(s) {1, 3, 7, 10}, accuracy is 89.3333%
+	Using feature(s) {1, 3, 6, 10}, accuracy is 80.3333%
+	Using feature(s) {1, 3, 6, 7}, accuracy is 86%
+Feature set {1, 6, 7, 10} was best, accuracy is 91%
+	Using feature(s) {6, 7, 10}, accuracy is 93%
+	Using feature(s) {1, 7, 10}, accuracy is 92.6667%
+	Using feature(s) {1, 6, 10}, accuracy is 78.6667%
+	Using feature(s) {1, 6, 7}, accuracy is 85.6667%
+Feature set {6, 7, 10} was best, accuracy is 93%
+	Using feature(s) {7, 10}, accuracy is 96.6667%
+	Using feature(s) {6, 10}, accuracy is 79.3333%
+	Using feature(s) {6, 7}, accuracy is 85%
+Feature set {7, 10} was best, accuracy is 96.6667%
+	Using feature(s) {10}, accuracy is 81.6667%
+	Using feature(s) {7}, accuracy is 83.3333%
+(Warning, Accuracy has decreased! Continuing search in case of local maxima)
+Feature set {7} was best, accuracy is 83.3333%
+	Using feature(s) {}, accuracy is 12.6667%
+Feature set {} was best, accuracy is 12.6667%
+Finished search!! The best feature subset is {7, 10} which has an accuracy of 96.6667%
+
+Runtime duration: 1.36247 seconds
